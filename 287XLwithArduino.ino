@@ -5,7 +5,7 @@
 
 #define FLD32(d)    wrOpWr2(0xd900, (d)) 
 #define FILD32(d)   wrOpWr2(0xdb00, (d))
-#define FLD64(d)    wrOpwr4(0xdd00, (d))
+#define FLD64(d)    wrOpWr4(0xdd00, (d))
 #define FILD16(d)   wrOpWr1(0xdf00, (d))
 #define FLD(i)      wrOp(0xd9c0 | ((i) & 0x03)) 
 
@@ -134,8 +134,6 @@ void setup() {
 unsigned din() {
   DDRF = 0x00;
   DDRK = 0x00;
-  //PORTF = 0xff;   /* Pull up */
-  //PORTK = 0xff;   /* Pull up */
   return (PINF << 8) | PINK;
 }
 
@@ -298,7 +296,7 @@ void loop() {
   float v;
 
   rstFPU();
-  
+  Serial.println("Single precision");
   for (y = -12; y <= 12; y++) {
     for (x = -39; x <= 39; x++) {
       FWAIT;
@@ -334,6 +332,66 @@ void loop() {
         FLD32(a);
         FMUL(0);
         FLD32(b);
+        FMUL(0);
+        FADD(1);
+        d = FSTP32;
+        FFREE(0);
+        memcpy(&v, &d, 4);
+        if (v > 4)
+          break;
+      }
+      if (i <= 15) {
+        if (i > 9)
+          i += 7;
+        Serial.write(0x30 + i);
+      } else {
+        Serial.print(" ");
+      }
+    }
+    Serial.print("\n");  
+  }
+  Serial.println(millis());
+  Serial.print("\n");
+
+  Serial.println("Double precision");
+  unsigned long long dca, dcb, da, db, dt, dd;
+  double dv;
+    
+  for (y = -12; y <= 12; y++) {
+    for (x = -39; x <= 39; x++) {
+      FWAIT;
+      FILD16(x);
+      FMUL64(0x3fa77318fc504817);
+      dca = FSTP64;
+      FILD16(y);
+      FMUL64(0x3fb5551d68c692f7);
+      dcb = FSTP64;
+      da = dca;
+      db = dcb;
+
+      for (i = 0; i <= 15; i++) {
+        //t = a * a - b * b + ca;
+        FLD64(db);
+        FMUL(0);
+        FLD64(da);
+        FMUL(0);
+        FSUB(1);
+        FADD64(dca);
+        dt = FSTP64;
+        FFREE(0);
+
+        //b = 2 * a * b + cb;
+        FILD16(2);
+        FMUL64(da);
+        FMUL64(db);
+        FADD64(dcb);
+        db = FSTP64;
+        da = dt;
+
+        // v = a * a + b * b;
+        FLD64(da);
+        FMUL(0);
+        FLD64(db);
         FMUL(0);
         FADD(1);
         d = FSTP32;
