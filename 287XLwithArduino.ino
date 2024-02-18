@@ -5,19 +5,19 @@
 
 #define FLD32(d)    wrOpWr2(0xd900, (d)) 
 #define FILD32(d)   wrOpWr2(0xdb00, (d))
-#define FLD64(d)    
+#define FLD64(d)    wrOpwr4(0xdd00, (d))
 #define FILD16(d)   wrOpWr1(0xdf00, (d))
 #define FLD(i)      wrOp(0xd9c0 | ((i) & 0x03)) 
 
-#define FST32       wrOpRd2(0xd910);
-#define FIST32      wrOpRd2(0xdb10);
-#define FST64
+#define FST32       wrOpRd2(0xd910)
+#define FIST32      wrOpRd2(0xdb10)
+#define FST64       wrOpRd4(0xdd10)
 #define FIST16      wrOpRD1(0xdf10)
 #define FST(i)      wrOpc(0xddd0 | ((i) & 0x03))
 
 #define FSTP32      wrOpRd2(0xd918)
 #define FISTP32     wrOpRd2(0xdb18)
-#define FSTP64
+#define FSTP64      wrOpRd4(0xdd18)
 #define FISTP16     wrOpRd1(0xdf18)
 #define FSTP(i)     wrOpc(0xddd8 | ((i) & 0x03))
 #define FXCH(i)     wrOpc(0xd9c8 | ((i) & 0x03))
@@ -41,49 +41,49 @@
 
 #define FADD32(d)   wrOpWr2(0xd800, (d)) 
 #define FIADD32(d)  wrOpWr2(0xde00, (d))
-#define FADD64(d)
-#define FIADD16(d)  wrOpWr2(0xda00, (d))
-#define FADD(i)     wrOpc(0xd8c0 | ((i) & 0x03)) /* FADD ST, ST(i) */
-#define FADDd(i)    wrOpc(0xdcc0 | ((i) & 0x03)) /* FADD ST(i), ST */
-#define FADDPd(i)   wrOpc(0xdec0 | ((i) & 0x03)) /* FADDP ST(i), ST */
+#define FADD64(d)   wrOpWr4(0xdc00, (d))
+#define FIADD16(d)  wrOpWr1(0xda00, (d))
+#define FADD(i)     wrOpc(0xd8c0 | ((i) & 0x03))  /* FADD ST, ST(i) */
+#define FADDd(i)    wrOpc(0xdcc0 | ((i) & 0x03))  /* FADD ST(i), ST */
+#define FADDPd(i)   wrOpc(0xdec0 | ((i) & 0x03))  /* FADDP ST(i), ST */
 
 #define FSUB32(d)   wrOpWr2(0xd820, (d))
 #define FISUB32(d)  wrOpWr2(0xde20, (d))
-#define FSUB64(d)
+#define FSUB64(d)   wrOpWr4(0xdc20, (d))
 #define FISUB16(d)  wrOpWr1(0xda20, (d))
-#define FSUB(i)     wrOpc(0xd8e0 | ((i) & 0x03)) /* FSUB ST, ST(i) */
-#define FSUBd(i)    wrOpc(0xdce8 | ((i) & 0x03)) /* FSUB ST(i), ST */
-#define FSUBPd(i)   wrOpc(0x0de8 | ((i) & 0x03)) /* FSUBP ST(i), ST */
+#define FSUB(i)     wrOpc(0xd8e0 | ((i) & 0x03))  /* FSUB ST, ST(i) */
+#define FSUBd(i)    wrOpc(0xdce8 | ((i) & 0x03))  /* FSUB ST(i), ST */
+#define FSUBPd(i)   wrOpc(0x0de8 | ((i) & 0x03))  /* FSUBP ST(i), ST */
 #define FSUBR32(d)  wrOpWr2(0xd828, (d)) 
 #define FISUBR32(d) wrOpWr2(0xde28, (d))
-#define FSUBR64(d)
-#define FISUBR16(d) wrOpWr2(0xda30, (d))
-#define FSUBR(i)    wrOpc(0xd8e8 | ((i) & 0x03)) /* FSUBR ST, ST(i) */
-#define FSUBRd(i)   wrOpc(0xdce0 | ((i) & 0x03)) /* FSUBR ST(i), ST */
-#define FSUBRPd(i)  wrOpc(0xdee0 | ((i) & 0x03)) /* FSUBRP ST(i), ST */
+#define FSUBR64(d)  wrOpWr4(0xdc28, (d))
+#define FISUBR16(d) wrOpWr1(0xda28, (d))
+#define FSUBR(i)    wrOpc(0xd8e8 | ((i) & 0x03))  /* FSUBR ST, ST(i) */
+#define FSUBRd(i)   wrOpc(0xdce0 | ((i) & 0x03))  /* FSUBR ST(i), ST */
+#define FSUBRPd(i)  wrOpc(0xdee0 | ((i) & 0x03))  /* FSUBRP ST(i), ST */
 
-#define FMUL32(d)   wrOpWr2(0xd808, (d))        /* FMUL ST, m32 */
-#define FIMUL32(d)  wrOpWr2(0xde08, (d))        /* FIMUL ST, m32 */
-#define FMUL64(d)
-#define FIMUL16(d)  wrOpWr2(0xda08, (d))        /* FIMUL ST, m16 */
-#define FMUL(i)     wrOpc(0xd8c8 | ((i) & 0x03)) /* FMUL ST(0), ST(i) */
-#define FMULd(i)    wrOpc(0xdcc8 | ((i) & 0x03)) /* FMUL ST(i), ST(0) */
-#define FMULPd(i)   wrOpc(0xdec8 | ((i) & 0x03)) /* FMULP ST(i), ST(0) */
+#define FMUL32(d)   wrOpWr2(0xd808, (d))          /* FMUL ST, m32 */
+#define FIMUL32(d)  wrOpWr2(0xde08, (d))          /* FIMUL ST, m32 */
+#define FMUL64(d)   wrOpWr4(0xdc08, (d))          /* FMUL ST, m64 */
+#define FIMUL16(d)  wrOpWr1(0xda08, (d))          /* FIMUL ST, m16 */
+#define FMUL(i)     wrOpc(0xd8c8 | ((i) & 0x03))  /* FMUL ST(0), ST(i) */
+#define FMULd(i)    wrOpc(0xdcc8 | ((i) & 0x03))  /* FMUL ST(i), ST(0) */
+#define FMULPd(i)   wrOpc(0xdec8 | ((i) & 0x03))  /* FMULP ST(i), ST(0) */
 
 #define FDIV32(d)   wrOpWr2(0xd830, (d))
 #define FIDIV32(d)  wrOpWr2(0xde30, (d))
-#define FDIV64(d)
-#define FIDIV16(d)  wrOpWr2(0xda30, (d))
-#define FDIV(i)     wrOpc(0xd8f0 | ((i) & 0x03)) /* FDIV ST, ST(i) */
-#define FDIVd(i)    wrOpc(0xdcf8 | ((i) & 0x03)) /* FDIV ST(i), ST */
-#define FDIVPd(i)   wrOpc(0x0df8 | ((i) & 0x03)) /* FDIVP ST(i), ST */
+#define FDIV64(d)   wrOpWr4(0xdc30, (d))
+#define FIDIV16(d)  wrOpWr1(0xda30, (d))
+#define FDIV(i)     wrOpc(0xd8f0 | ((i) & 0x03))  /* FDIV ST, ST(i) */
+#define FDIVd(i)    wrOpc(0xdcf8 | ((i) & 0x03))  /* FDIV ST(i), ST */
+#define FDIVPd(i)   wrOpc(0x0df8 | ((i) & 0x03))  /* FDIVP ST(i), ST */
 #define FDIVR32(d)  wrOpWr2(0xd838, (d))
 #define FIDIVR32(d) wrOpWr2(0xde38, (d))
-#define FDIVR64(d)  
-#define FIDIVR16(d) wrOpWr2(0xda38, (d))
-#define FDIVR(i)    wrOpc(0xd8f8 | ((i) & 0x03)) /* FDIVR ST, ST(i) */
-#define FDIVRd(i)   wrOpc(0xdcf0 | ((i) & 0x03)) /* FSUBR ST(i), ST */
-#define FDIVRPd(i)  wrOpc(0xdef0 | ((i) & 0x03)) /* FSUBRP ST(i), ST */
+#define FDIVR64(d)  wrOpWr4(0xdc38, (d))
+#define FIDIVR16(d) wrOpWr1(0xda38, (d))
+#define FDIVR(i)    wrOpc(0xd8f8 | ((i) & 0x03))  /* FDIVR ST, ST(i) */
+#define FDIVRd(i)   wrOpc(0xdcf0 | ((i) & 0x03))  /* FSUBR ST(i), ST */
+#define FDIVRPd(i)  wrOpc(0xdef0 | ((i) & 0x03))  /* FSUBRP ST(i), ST */
 
 #define FSQRT     wrOpc(0xd9fa)
 #define FSCALE    wrOpc(0xd9fd)
